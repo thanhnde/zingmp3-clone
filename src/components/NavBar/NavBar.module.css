@@ -1,0 +1,99 @@
+.navBar {
+    width: auto;
+    height: 70px;
+    display: flex;
+    flex-direction: row;
+    color: white;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 30px;
+    /* padding-top: 15px; */
+    background-color: rgba(23, 15, 35, 0.8);
+    position: sticky;
+    top: 0;
+    z-index: 99;
+    min-width: 660px;
+}
+
+.leftNavBar,
+.rightNavBar {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+}
+
+.leftNavBar {
+    width: 70%;
+    justify-content: start;
+}
+
+.rightNavBar {
+    width: 30%;
+    justify-content: space-evenly;
+}
+
+.arrowLeftButton,
+.arrowRightButton {
+    color: hsla(0, 0%, 100%, 0.3);
+    font-size: 20px;
+}
+
+.arrowRightButton {
+    margin: 0 20px 0 20px;
+}
+
+.searchBar {
+    background-color: hsla(0, 0%, 100%, 0.1);
+    height: 40px;
+    width: 60%;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    border-radius: 20px;
+    align-items: center;
+    padding: 0 10px 0 10px;
+}
+
+.inputSearch {
+    background-color: transparent;
+    border: none;
+    color: white;
+}
+
+.inputSearch::placeholder {
+    color: hsla(0, 0%, 100%, 0.8);
+}
+
+.inputSearch:focus {
+    box-shadow: none;
+}
+
+.downloadWindows {
+    background-color: hsla(0, 0%, 100%, 0.1);
+    color: #C273ED;
+    border-radius: 20px;
+    position: relative;
+    top: 0;
+    left: 0;
+    height: 40px;
+    width: auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 0 25px 0 25px;
+}
+
+.settingButton,
+.userSettingButton {
+    background-color: hsla(0, 0%, 100%, 0.1);
+    border-radius: 20px;
+    height: 40px;
+    width: 40px;
+    position: relative;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

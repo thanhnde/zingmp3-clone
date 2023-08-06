@@ -1,0 +1,10 @@
+.channelCol {
+    height: 270px;
+    width: 100px;
+}
+
+.contentCol {
+    height: 270px;
+    width: calc(100% - 100px);
+    background-color: hsla(0, 0%, 100%, 0.1);
+}

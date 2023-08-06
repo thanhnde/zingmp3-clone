@@ -1,0 +1,21 @@
+* {
+  padding: 0;
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+  background-color: #170f23;
+}
+
+::-webkit-scrollbar {
+  /* Remove scrollbar space */
+  /* width: 0; */
+  /* Make scrollbar invisible */
+  /* background: transparent; */
+  display: none;
+}
+
+.ant-wave {
+  display: none;
+}

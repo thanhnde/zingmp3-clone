@@ -1,0 +1,17 @@
+.discoverPage {
+  height: auto;
+  width: auto;
+  display: flex;
+  flex-direction: row;
+}
+
+.contentCarousel {
+  width: calc(100% /3);
+  height: auto;
+}
+
+.bannerImage {
+  border-radius: 5px;
+  height: 100%;
+  width: 100%;
+}

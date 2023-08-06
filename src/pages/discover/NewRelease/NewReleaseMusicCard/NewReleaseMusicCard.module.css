@@ -1,0 +1,76 @@
+.borderCard {
+    height: auto;
+    width: auto;
+    display: flex;
+    flex-direction: row;
+    border-radius: 5px;
+    margin-right: 14px;
+    position: relative;
+}
+
+.imageMusic {
+    border-radius: 4px;
+}
+
+.opacityButton,
+.opacityMoreButton {
+    display: none;
+}
+
+.moreButton {
+    width:40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+    margin-right: 5px;
+}
+
+.moreButton:hover {
+    background-color: hsla(0, 0%, 100%, 0.1);
+}
+
+.borderCard:hover {
+    background-color: hsla(0, 0%, 100%, 0.1);
+
+    .imageMusic {
+        opacity: 0.3;
+    }
+
+    .opacityButton {
+        display: flex;
+        justify-content: space-evenly;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        align-items: center;
+        transform: translateX(-50%) translateY(-50%);
+        width: 100%;
+        color: white;
+    }
+
+    .opacityMoreButton {
+        display: flex;
+        justify-content: flex-end;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        right: 0;
+        bottom: 0;
+        align-items: center;
+        transform: translateX(-50%) translateY(-50%);
+        width: 100%;
+        color: white;
+    }
+}
+
+.textCard {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    padding: 10px 10px 10px 0;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
