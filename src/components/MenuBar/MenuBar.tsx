@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 import styles from './MenuBar.module.css';
+import './ModalCustom.css'
 
-import { List, Tag, Divider, Image } from 'antd';
+import { List, Tag, Divider, Image, Modal, Button } from 'antd';
 
 import { NavLink, useLocation } from 'react-router-dom';
 import { PlayCircleOutlined } from '@ant-design/icons';
+import ModalContent from './ModalContent/ModalContent';
 
-import { connectFireBase } from '../../utils/FirebaseConfig';
 import { saveURL } from '../../utils/SaveURL';
 
 import { getStorage } from 'firebase/storage';
@@ -30,58 +31,98 @@ const menu2 = [
     { name: 'Top 100', path: "/top-100", icon: "top-100.png", iconPath: "" },
 ]
 
-const MenuBar = () => {
-    connectFireBase();
+const newPlayListIcon = {
+    icon: "new-playlist.png",
+    iconPath: ""
+};
 
+const MenuBar = () => {
+    ///////////////// Firebase /////////////////////
     const db = getDatabase();
     const storage = getStorage();
 
     const [menuState1, setMN1] = useState(menu1);
     const [menuState2, setMN2] = useState(menu2);
+    const [newPlayListIconState, setNewPlayListIconState] = useState(newPlayListIcon);
 
     // Get download link from realtime db
     const getURL = async (db: any) => {
         const snap = (await get(refDatabase(db, 'icon-menu-bar')))
 
-        const imageUrl: Array<URLProps> = snap.val().map((item: URLProps) => {
-            return { ...item, iconPath: '' };
-        });
-
-        await Promise.all(imageUrl.map((item) => {
+        await Promise.all(snap.val().map((item: URLProps) => {
             menuState1.map((state) => {
                 if (state.icon === item.name) {
                     state.iconPath = item.path
                 }
             })
+
             menuState2.map((state) => {
                 if (state.icon === item.name) {
                     state.iconPath = item.path
                 }
             })
 
-            // menuState1.forEach((item) => {
-            //     const found = imageUrl.find((img) => img.name === item.icon);
+            if (newPlayListIconState.icon === item.name) {
+                newPlayListIconState.iconPath = item.path
+            }
+
+            // menuState1.forEach((state) => {
+            //     const found = imageUrl.find((item) => state.icon === item.name);
             //     if (found) {
-            //         item.iconPath = found.path;
+            //         console.log(found)
             //     }
             // })
         }))
 
-        setMN1([...menu1]);
-        setMN2([...menu2]);
+        setMN1([...menuState1]);
+        setMN2([...menuState2]);
+        setNewPlayListIconState(newPlayListIconState);
     }
+
+    const awaitData = async () => {
+        await saveURL(db, storage, 'icon-menu-bar');
+        getURL(db);
+    }
+
 
     // Save donwload url of image to firebase
     useEffect(() => {
-        saveURL(db, storage, 'icon-menu-bar');
-        getURL(db);
+        awaitData();
     }, [])
+
+
+    ////////////////// Path /////////////////
 
     const currentPath = useLocation().pathname;
     const [pathActive, setPathActive] = useState(currentPath);
 
     const handlePathActive = (name: string) => {
-        setPathActive(name)
+        setPathActive(name);
+    }
+
+    ///////////////// Modal ///////////////////
+
+    const [modalOpen, setModalOpen] = useState(false);
+    const showModal = () => {
+        setModalOpen(true);
+    };
+    const handleOk = () => {
+        setTimeout(() => {
+            setModalOpen(false);
+        }, 3000);
+    };
+    const handleCancel = () => {
+        setModalOpen(false);
+    };
+
+    const [inputValue, setInputValue] = useState("");
+
+    const handleChange = (valueProps: any) => {
+        setInputValue(valueProps)
+    }
+
+    const createNewPlaylist = (value: string) => {
+        alert(value);
     }
 
     return (
@@ -90,7 +131,7 @@ const MenuBar = () => {
                 <Image
                     className={styles.logo}
                     src="/zmp3.svg"
-                    alt="Next.js Logo"
+                    alt="Zingmp3 Logo"
                     width={120}
                     height={40}
                     preview={false}
@@ -100,7 +141,7 @@ const MenuBar = () => {
             <div className={styles.menuFunction}>
                 <List
                     size="large"
-                    dataSource={menu1}
+                    dataSource={menuState1}
                     renderItem={(item) => {
                         if (pathActive === item.path) {
                             return (
@@ -112,13 +153,13 @@ const MenuBar = () => {
                                         <div className={styles.menu1}>
                                             <div style={{ marginRight: "10px" }}>
                                                 <Image
-                                                    src={item.iconPath || "errorCircle.png"}
+                                                    src={item.iconPath || "/assets/error-image/error-circle.png"}
                                                     alt={`${item.name} Logo`}
                                                     width={24}
                                                     preview={false}
                                                 />
                                             </div>
-                                            <p style={{ color: 'white', marginRight: "10px" }}>{item.name}</p>
+                                            <p className={styles.hoverText} style={{ marginRight: "10px" }}>{item.name}</p>
                                             {
                                                 item.name === "Radio"
                                                 &&
@@ -154,13 +195,13 @@ const MenuBar = () => {
                                     <div className={styles.menu1}>
                                         <div style={{ marginRight: "10px" }}>
                                             <Image
-                                                src={item.iconPath || "errorCircle.png"}
+                                                src={item.iconPath || "/assets/error-image/error-circle.png"}
                                                 alt={`${item.name} Logo`}
                                                 width={24}
                                                 preview={false}
                                             />
                                         </div>
-                                        <p style={{ color: 'white', marginRight: "10px" }}>{item.name}</p>
+                                        <p className={styles.hoverText} style={{ marginRight: "10px" }}>{item.name}</p>
                                         {
                                             item.name === "Radio"
                                             &&
@@ -193,7 +234,7 @@ const MenuBar = () => {
 
                 <List
                     size="large"
-                    dataSource={menu2}
+                    dataSource={menuState2}
                     renderItem={(item) => {
                         if (pathActive === item.path) {
                             return (
@@ -211,7 +252,7 @@ const MenuBar = () => {
                                                     preview={false}
                                                 />
                                             </div>
-                                            <p style={{ color: 'white', marginRight: "10px" }}>{item.name}</p>
+                                            <p className={styles.hoverText} style={{ marginRight: "10px" }}>{item.name}</p>
                                             {
                                                 item.name === "Radio"
                                                 && <Tag color="#FE0000" style={{
@@ -236,13 +277,13 @@ const MenuBar = () => {
                                     <div className={styles.menu1}>
                                         <div style={{ marginRight: "10px" }}>
                                             <Image
-                                                src={item.iconPath || "errorCircle.png"}
+                                                src={item.iconPath || "/assets/error-image/error-circle.png"}
                                                 alt={`${item.name} Logo`}
                                                 width={24}
                                                 preview={false}
                                             />
                                         </div>
-                                        <p style={{ color: 'white', marginRight: "10px" }}>{item.name}</p>
+                                        <p className={styles.hoverText} style={{ marginRight: "10px" }}>{item.name}</p>
                                         {
                                             item.name === "Radio"
                                                 ?
@@ -263,31 +304,64 @@ const MenuBar = () => {
                     }}
                 />
 
-                <div style={{ borderTop: "1px hsla(0, 0%, 100%, 0.1) solid" }}>
-                    <NavLink to='/new-playlist' style={{ textDecoration: 'none' }}>
-                        <div style={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            justifyContent: "flex-start",
-                            alignItems: 'center',
-                            width: 'auto',
-                            height: '48px',
-                            padding: "0 25px 0 25px",
-                        }}>
-                            <div style={{ marginRight: "10px" }}>
-                                <Image
-                                    src={`/assets/menu/new-playlist.png`}
-                                    alt={`New playlist Logo`}
-                                    width={24}
-                                    height={24}
-                                    preview={false}
-                                />
-                            </div>
-                            <p style={{ color: 'white' }}>Tạo playlist mới</p>
+                <div style={{ borderTop: "1px hsla(0, 0%, 100%, 0.1) solid" }} onClick={showModal}>
+                    <div style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: "flex-start",
+                        alignItems: 'center',
+                        width: 'auto',
+                        height: '48px',
+                        padding: "0 25px 0 25px",
+                    }}>
+                        <div style={{ marginRight: "10px", marginLeft: "2px", cursor: "pointer" }}>
+                            <Image
+                                src={newPlayListIconState.iconPath || "/assets/error-image/error-circle.png"} // Skeleton ant
+                                alt={`New playlist Logo`}
+                                width={24}
+                                height={24}
+                                preview={false}
+                            />
                         </div>
-                    </NavLink>
+                        <p className={styles.hiddenSelect}>Tạo playlist mới</p>
+                    </div>
                 </div>
             </div>
+
+            <Modal title="Tạo playlist mới" open={modalOpen}
+                onOk={handleOk}
+                onCancel={handleCancel}
+                transitionName=""
+                centered
+                wrapClassName="modalCustom"
+                footer={[
+                    <>
+                        {inputValue !== ""
+                            ? <Button onClick={() => { createNewPlaylist(inputValue) }} style={{
+                                width: "100%",
+                                borderRadius: "999px",
+                                border: 0,
+                                backgroundColor: "#9b4de0",
+                                color: 'white'
+                            }}>
+                                Tạo mới
+                            </Button>
+                            : <Button onClick={() => { createNewPlaylist(inputValue) }} disabled style={{
+                                width: "100%",
+                                borderRadius: "999px",
+                                border: 0,
+                                backgroundColor: "#9b4de0",
+                                color: 'white'
+                            }}>
+                                Tạo mới
+                            </Button>
+                        }
+                    </>
+                ]}
+            >
+                <ModalContent inputValue={inputValue} onChange={handleChange} />
+            </Modal>
+            {inputValue}
         </div >
     )
 }

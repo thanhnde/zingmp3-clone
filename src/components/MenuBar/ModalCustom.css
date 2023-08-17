@@ -1,0 +1,17 @@
+.modalCustom .ant-modal-content {
+    height: auto;
+    width: 330px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+}
+
+.modalCustom .ant-modal-content{
+    background-color: #34224f;
+    color: white;
+}
+
+.modalCustom .ant-modal-title {
+    display: none;
+}

@@ -1,5 +1,5 @@
 import SlideBanner from "./SlideBanner/SlideBanner";
-import Chill from "./Chill/Child";
+import Chill from "./Chill/Chill";
 import MotChutYeuDoi from "./MotChutYeuDoi/MotChutYeuDoi";
 import NewRelease from "./NewRelease/NewRelease";
 

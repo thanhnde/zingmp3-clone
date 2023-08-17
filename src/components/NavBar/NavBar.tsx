@@ -44,11 +44,12 @@ const NavBar = () => {
 
                     <div className={styles.userSettingButton}>
                         <Image
-                            src="/assets/user-default.png"
+                            src={"/assets/user-default.png" || "errorCircle.png"}
                             alt='User setting'
                             height={40}
                             width={40}
                             style={{ borderRadius: "20px" }}
+                            preview={false}
                         />
                     </div>
                 </div>

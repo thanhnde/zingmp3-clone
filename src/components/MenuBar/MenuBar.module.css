@@ -57,7 +57,13 @@
   display: none;
 }
 
-.itemActive:hover, .itemUnActive:hover {
+.hoverText,
+.hiddenSelect {
+  color: #DADADA;
+}
+
+.itemActive:hover,
+.itemUnActive:hover {
   .playOutlined {
     display: flex;
     justify-content: flex-end;
@@ -67,4 +73,21 @@
     width: 100%;
     color: white;
   }
+
+  .hoverText {
+    color: white;
+  }
+}
+
+.hiddenSelect:hover {
+  color: white;
+}
+
+.hiddenSelect {
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: pointer;
 }

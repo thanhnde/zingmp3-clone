@@ -1,0 +1,9 @@
+.programSche {
+    background-color: hsla(0, 0%, 100%, 0.1);
+    width: 100%;
+    height: 81.33px;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: row;
+    padding-left: 10px;
+}

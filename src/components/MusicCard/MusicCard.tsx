@@ -2,13 +2,14 @@ import styles from './MusicCard.module.css'
 
 import { Image } from "antd";
 import { HeartOutlined, PlayCircleOutlined, MoreOutlined } from '@ant-design/icons'
+import { useState } from 'react';
 
-type ChillProps = {
+type MusicCardProps = {
     title: string,
     imageAlbum: string,
 }
 
-const MusicCard = ({ title, imageAlbum }: ChillProps) => {
+const MusicCard = ({ title, imageAlbum}: MusicCardProps) => {
     return (
         <>
             {/* display: flex */}

@@ -25,7 +25,7 @@ const NewRelease = () => {
     }
 
     return (
-        <div style={{ minHeight: "320px", marginTop: '50px' }}>
+        <div style={{ height: 'auto', marginTop: '50px' }}>
             <h1 style={{ color: 'white', fontSize: '20px' }}>Mới phát hành</h1>
 
             <div style={{

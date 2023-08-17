@@ -9,8 +9,14 @@ import TopNewRelease from './pages/top-new-release/TopNewRelease';
 import Topic from './pages/topic/Topic';
 import Top100 from './pages/top-100/Top100';
 
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { connectFireBase } from './utils/FirebaseConfig';
+import { Route, Routes } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+
+////////////////////// UPLOAD //////////////////////////////
+import NewReleaseUpload from './admin-upload/NewReleaseUpload';
+import ChillUpload from './admin-upload/ChillUpload';
+import MCYDUpload from './admin-upload/MCYDUpload';
 
 const pages = [
   { component: <Discover />, path: "/" },
@@ -23,6 +29,8 @@ const pages = [
 ]
 
 function App() {
+  connectFireBase();
+
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -34,7 +42,8 @@ function App() {
   return (
     <>
       {loading
-        ? <BrowserRouter>
+        ?
+        <div>
           <div style={{
             display: 'flex',
             flexDirection: 'row',
@@ -42,6 +51,7 @@ function App() {
             height: '100%',
           }}>
             <MenuBar />
+
             <div style={{
               width: 'calc(100% - 240px)',
               height: "100%",
@@ -55,14 +65,20 @@ function App() {
                 <NavBar />
                 <Routes>
                   {pages.map((item, index) => (
-                    <Route key={index} path={item.path} element={item.component} />
+                    <Route key={index} path={ item.path} element={item.component} />
                   ))}
+
+                  {/* UPLOAD TEST */}
+                  <Route path='/admin/upload/new-release' element={<NewReleaseUpload />} />
+                  <Route path='/admin/upload/chill' element={<ChillUpload />} />
+                  <Route path='/admin/upload/mcyd' element={<MCYDUpload />} />
+
                 </Routes>
               </div>
             </div>
           </div>
-        </BrowserRouter>
-        : <p style={{ height: "100%", width: "100%", color: 'white', textAlign: 'center', transform: "translateY(50%)"}}>Loading test ...</p>
+        </div>
+        : <p style={{ height: "100%", width: "100%", color: 'white', textAlign: 'center', transform: "translateY(50%)" }}>Loading test ...</p>
       }
     </>
   );

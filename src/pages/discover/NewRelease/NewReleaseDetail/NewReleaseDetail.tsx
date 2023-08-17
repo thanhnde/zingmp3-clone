@@ -1,249 +1,97 @@
+import { useEffect, useState } from "react";
 import Music from "../NewReleaseMusicCard/NewReleaseMusicCard";
 import styles from './NewReleaseDetail.module.css';
+
+import { get, getDatabase, ref as refDatabase } from 'firebase/database';
+import { createTempData } from "../CreateTempDataNewRelease";
 
 type TypeMusicProps = {
     type: string
 }
 
-type NewReleaseProps = Array<{
-    imageMusic: string;
-    nameMusic: string;
+type NewReleaseProps = {
+    name: string;
     artist: string;
-    releaseTime: string;
     type: string;
+    media: {
+        image: {
+            name: string,
+            path: string
+        },
+        audio: {
+            name: string,
+            path: string
+        }
+    }
+    time: string;
     premium?: undefined;
 } | {
-    imageMusic: string;
-    nameMusic: string;
+    name: string;
     artist: string;
-    releaseTime: string;
     type: string;
+    media: {
+        image: {
+            name: string,
+            path: string
+        },
+        audio: {
+            name: string,
+            path: string
+        }
+    }
+    time: string;
     premium: boolean;
-}>
-
-const dataNew = {
-    "QT": [
-        {
-            imageMusic: "https://photo-resize-zmp3.zmdcdn.me/w94_r1x1_webp/banner/6/c/2/d/6c2d209def0a531085ac6c1944d70450.jpg",
-            nameMusic: "QT Music 1",
-            artist: "Wheel",
-            releaseTime: "3 ngày trước",
-            type: "QUỐC TẾ",
-        },
-        {
-            imageMusic: "https://photo-resize-zmp3.zmdcdn.me/w94_r1x1_webp/banner/6/c/2/d/6c2d209def0a531085ac6c1944d70450.jpg",
-            nameMusic: "QT Music 2",
-            artist: "Wheel",
-            releaseTime: "3 ngày trước",
-            type: "QUỐC TẾ",
-        },
-        {
-            imageMusic: "https://photo-resize-zmp3.zmdcdn.me/w94_r1x1_webp/banner/6/c/2/d/6c2d209def0a531085ac6c1944d70450.jpg",
-            nameMusic: "QT Music 3",
-            artist: "Wheel",
-            releaseTime: "3 ngày trước",
-            type: "QUỐC TẾ",
-            premium: true
-        },
-        {
-            imageMusic: "https://photo-resize-zmp3.zmdcdn.me/w94_r1x1_webp/banner/6/c/2/d/6c2d209def0a531085ac6c1944d70450.jpg",
-            nameMusic: "QT Music 4",
-            artist: "Wheel",
-            releaseTime: "2 ngày trước",
-            type: "QUỐC TẾ",
-        },
-        {
-            imageMusic: "https://photo-resize-zmp3.zmdcdn.me/w94_r1x1_webp/banner/6/c/2/d/6c2d209def0a531085ac6c1944d70450.jpg",
-            nameMusic: "QT Music 6",
-            artist: "Wheel",
-            releaseTime: "3 ngày trước",
-            type: "QUỐC TẾ",
-        },
-    ],
-
-    "VN": [
-        {
-            imageMusic: "https://photo-resize-zmp3.zmdcdn.me/w94_r1x1_webp/banner/6/c/2/d/6c2d209def0a531085ac6c1944d70450.jpg",
-            nameMusic: "VN Music 1",
-            artist: "Wheel",
-            releaseTime: "3 ngày trước",
-            type: "VIỆT NAM",
-        },
-        {
-            imageMusic: "https://photo-resize-zmp3.zmdcdn.me/w94_r1x1_webp/banner/6/c/2/d/6c2d209def0a531085ac6c1944d70450.jpg",
-            nameMusic: "VN Music 2",
-            artist: "Wheel",
-            releaseTime: "3 ngày trước",
-            type: "VIỆT NAM",
-        },
-        {
-            imageMusic: "https://photo-resize-zmp3.zmdcdn.me/w94_r1x1_webp/banner/6/c/2/d/6c2d209def0a531085ac6c1944d70450.jpg",
-            nameMusic: "VN Music 3",
-            artist: "Wheel",
-            releaseTime: "3 ngày trước",
-            type: "VIỆT NAM",
-        },
-        {
-            imageMusic: "https://photo-resize-zmp3.zmdcdn.me/w94_r1x1_webp/banner/6/c/2/d/6c2d209def0a531085ac6c1944d70450.jpg",
-            nameMusic: "VN Music 4",
-            artist: "Wheel",
-            releaseTime: "3 ngày trước",
-            type: "VIỆT NAM",
-            premium: true
-        },
-        {
-            imageMusic: "https://photo-resize-zmp3.zmdcdn.me/w94_r1x1_webp/banner/6/c/2/d/6c2d209def0a531085ac6c1944d70450.jpg",
-            nameMusic: "VN Music 5",
-            artist: "Wheel",
-            releaseTime: "3 ngày trước",
-            type: "VIỆT NAM",
-            premium: true
-        },
-        {
-            imageMusic: "https://photo-resize-zmp3.zmdcdn.me/w94_r1x1_webp/banner/6/c/2/d/6c2d209def0a531085ac6c1944d70450.jpg",
-            nameMusic: "VN Music 6",
-            artist: "Wheel",
-            releaseTime: "3 ngày trước",
-            type: "VIỆT NAM",
-        },
-        {
-            imageMusic: "https://photo-resize-zmp3.zmdcdn.me/w94_r1x1_webp/banner/6/c/2/d/6c2d209def0a531085ac6c1944d70450.jpg",
-            nameMusic: "VN Music 7",
-            artist: "Wheel",
-            releaseTime: "3 ngày trước",
-            type: "VIỆT NAM",
-        },
-        {
-            imageMusic: "https://photo-resize-zmp3.zmdcdn.me/w94_r1x1_webp/banner/6/c/2/d/6c2d209def0a531085ac6c1944d70450.jpg",
-            nameMusic: "VN MUSIC INDEX 13",
-            artist: "Wheel",
-            releaseTime: "3 ngày trước",
-            type: "VIỆT NAM",
-        },
-    ],
 }
 
-const dataOld = [
-    {
-        imageMusic: "https://photo-resize-zmp3.zmdcdn.me/w94_r1x1_webp/banner/6/c/2/d/6c2d209def0a531085ac6c1944d70450.jpg",
-        nameMusic: "VN Music 1",
-        artist: "Wheel",
-        releaseTime: "3 ngày trước",
-        type: "VIỆT NAM",
-    },
-    {
-        imageMusic: "https://photo-resize-zmp3.zmdcdn.me/w94_r1x1_webp/banner/6/c/2/d/6c2d209def0a531085ac6c1944d70450.jpg",
-        nameMusic: "VN Music 2",
-        artist: "Wheel",
-        releaseTime: "3 ngày trước",
-        type: "VIỆT NAM",
-    },
-    {
-        imageMusic: "https://photo-resize-zmp3.zmdcdn.me/w94_r1x1_webp/banner/6/c/2/d/6c2d209def0a531085ac6c1944d70450.jpg",
-        nameMusic: "VN Music 3",
-        artist: "Wheel",
-        releaseTime: "3 ngày trước",
-        type: "VIỆT NAM",
-    },
-    {
-        imageMusic: "https://photo-resize-zmp3.zmdcdn.me/w94_r1x1_webp/banner/6/c/2/d/6c2d209def0a531085ac6c1944d70450.jpg",
-        nameMusic: "VN Music 4",
-        artist: "Wheel",
-        releaseTime: "3 ngày trước",
-        type: "VIỆT NAM",
-        premium: true
-    },
-    {
-        imageMusic: "https://photo-resize-zmp3.zmdcdn.me/w94_r1x1_webp/banner/6/c/2/d/6c2d209def0a531085ac6c1944d70450.jpg",
-        nameMusic: "QT Music 1",
-        artist: "Wheel",
-        releaseTime: "3 ngày trước",
-        type: "QUỐC TẾ",
-    },
-    {
-        imageMusic: "https://photo-resize-zmp3.zmdcdn.me/w94_r1x1_webp/banner/6/c/2/d/6c2d209def0a531085ac6c1944d70450.jpg",
-        nameMusic: "VN Music 5",
-        artist: "Wheel",
-        releaseTime: "3 ngày trước",
-        type: "VIỆT NAM",
-        premium: true
-    },
-    {
-        imageMusic: "https://photo-resize-zmp3.zmdcdn.me/w94_r1x1_webp/banner/6/c/2/d/6c2d209def0a531085ac6c1944d70450.jpg",
-        nameMusic: "QT Music 2",
-        artist: "Wheel",
-        releaseTime: "3 ngày trước",
-        type: "QUỐC TẾ",
-    },
-    {
-        imageMusic: "https://photo-resize-zmp3.zmdcdn.me/w94_r1x1_webp/banner/6/c/2/d/6c2d209def0a531085ac6c1944d70450.jpg",
-        nameMusic: "VN Music 6",
-        artist: "Wheel",
-        releaseTime: "3 ngày trước",
-        type: "VIỆT NAM",
-    },
-    {
-        imageMusic: "https://photo-resize-zmp3.zmdcdn.me/w94_r1x1_webp/banner/6/c/2/d/6c2d209def0a531085ac6c1944d70450.jpg",
-        nameMusic: "QT Music 3",
-        artist: "Wheel",
-        releaseTime: "3 ngày trước",
-        type: "QUỐC TẾ",
-        premium: true
-    },
-    {
-        imageMusic: "https://photo-resize-zmp3.zmdcdn.me/w94_r1x1_webp/banner/6/c/2/d/6c2d209def0a531085ac6c1944d70450.jpg",
-        nameMusic: "QT Music 4",
-        artist: "Wheel",
-        releaseTime: "2 ngày trước",
-        type: "QUỐC TẾ",
-    },
-    {
-        imageMusic: "https://photo-resize-zmp3.zmdcdn.me/w94_r1x1_webp/banner/6/c/2/d/6c2d209def0a531085ac6c1944d70450.jpg",
-        nameMusic: "VN Music 7",
-        artist: "Wheel",
-        releaseTime: "3 ngày trước",
-        type: "VIỆT NAM",
-    },
-    {
-        imageMusic: "https://photo-resize-zmp3.zmdcdn.me/w94_r1x1_webp/banner/6/c/2/d/6c2d209def0a531085ac6c1944d70450.jpg",
-        nameMusic: "QT Music 6",
-        artist: "Wheel",
-        releaseTime: "3 ngày trước",
-        type: "QUỐC TẾ",
-    },
-    {
-        imageMusic: "https://photo-resize-zmp3.zmdcdn.me/w94_r1x1_webp/banner/6/c/2/d/6c2d209def0a531085ac6c1944d70450.jpg",
-        nameMusic: "VN MUSIC INDEX 12",
-        artist: "Wheel",
-        releaseTime: "3 ngày trước",
-        type: "VIỆT NAM",
-    },
-]
-
 const NewReleaseDetail = ({ type }: TypeMusicProps) => {
-    let newReleaseDetail: NewReleaseProps = [];
+    const db = getDatabase();
+    createTempData();
 
-    if (type === "ALL") newReleaseDetail = Object.values(dataNew).flat();
-    else if (type === "QT" || type === "VN") {
-        newReleaseDetail = dataNew[type];
+    const [data, setData] = useState<any>();
+
+    const getURL = async (db: any) => {
+        const snap = (await get(refDatabase(db, 'discover/new-release')))
+        setData(snap.val())
+    }
+
+    const awaitData = async () => {
+        await getURL(db);
+    }
+
+    useEffect(() => {
+        awaitData();
+    }, [])
+
+    let newReleaseDetail: Array<NewReleaseProps> = [];
+
+    if (data) {
+        if (type === "ALL") {
+            newReleaseDetail = Object.values(data).flat() as NewReleaseProps[]; // Set all
+        }
+        else if (type === "QT" || type === "VN") {
+            newReleaseDetail = data[type] // Set follow type
+        }
     }
 
     return (
         <div className={styles.gridMusic}>
-            {newReleaseDetail.map((item, index) => {
-                if (index < 12) {
+            {Object.values(newReleaseDetail).map((item, index) => {
+                if (index < 12 && item.name !== "Temp Data") {
                     return (
-                        <Music
-                            imageMusic={item.imageMusic}
-                            nameMusic={item.nameMusic}
-                            artist={item.artist}
-                            releaseTime={item.releaseTime}
-                            type={item.type}
-                            premium={item.premium}
-                            key={item.nameMusic}
-                        />
+                        <div>
+                            <Music
+                                imageMusic={item.media.image.path}
+                                nameMusic={item.name}
+                                artist={item.artist}
+                                audio={item.media.audio.path}
+                                releaseTime={item.time}
+                                type={item.type}
+                                premium={item.premium}
+                            />
+                        </div>
                     )
                 }
+                else return <></>
             })}
         </div>
     )

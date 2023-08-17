@@ -5,7 +5,6 @@ import { getStorage } from 'firebase/storage';
 import { getDatabase, ref as refDatabase, get } from 'firebase/database';
 import { useState, useEffect } from 'react';
 
-import { connectFireBase } from '../../../utils/FirebaseConfig';
 import { saveURL } from '../../../utils/SaveURL';
 
 type URLProps = {
@@ -14,7 +13,6 @@ type URLProps = {
 }
 
 const SlideBanner = () => {
-    connectFireBase();
     const db = getDatabase();
     const storage = getStorage();
 
@@ -22,18 +20,17 @@ const SlideBanner = () => {
 
     // Get download link from realtime db
     const getURL = async (db: any) => {
-        const snap = (await get(refDatabase(db, 'discover/slider-banner')))
+        const snap = await get(refDatabase(db, 'discover/slider-banner'));
+        setSBanner(snap.val());
+    }
 
-        const imageUrl: Array<URLProps> = snap.val().map((item: URLProps) => {
-            return { ...item };
-        });
-
-        setSBanner(imageUrl);
+    const awaitData = async () => {
+        await saveURL(db, storage, 'discover/slider-banner');
+        await getURL(db);
     }
 
     useEffect(() => {
-        saveURL(db, storage, "discover/slider-banner");
-        getURL(db);
+        awaitData();
     }, [])
 
     return (
@@ -41,19 +38,19 @@ const SlideBanner = () => {
             {sBanner.map((i, index) => {
                 if (index === 1) {
                     return (
-                        <div className={styles.contentCarousel} style={{ padding: "0 30px 0 30px" }}>
+                        <div className={styles.contentCarousel} style={{ padding: "0 30px 0 30px" }} key={i.name}>
                             <Image
                                 className={styles.bannerImage}
-                                src={i.path || "/errorRectangle.png"}
+                                src={i.path || "/asset/error-image/error-rectangle.png"}
                                 preview={false}
                             />
                         </div>
                     )
                 } else return (
-                    <div className={styles.contentCarousel}>
+                    <div className={styles.contentCarousel} key={i.name}>
                         <Image
                             className={styles.bannerImage}
-                            src={i.path || "/errorRectangle.png"}
+                            src={i.path || "/asset/error-image/errorRectangle.png"}
                             preview={false}
                         />
                     </div>

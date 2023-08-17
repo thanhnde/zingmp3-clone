@@ -1,5 +1,5 @@
 import { ref as refStorage, listAll, getDownloadURL } from 'firebase/storage';
-import { set, ref as refDatabase } from 'firebase/database';
+import { set, ref as refDatabase, get } from 'firebase/database';
 
 type URLProps = {
     name: string,
@@ -17,5 +17,6 @@ export const saveURL = async (db: any, storage: any, pathDB: string) => {
     }))
 
     // Save download link to realtime db
-    set(refDatabase(db, pathDB), save);
+    const check = await get(refDatabase(db, 'icon-menu-bar'));
+    if (!check.exists()) set(refDatabase(db, pathDB), save);
 }

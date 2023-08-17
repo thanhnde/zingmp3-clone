@@ -29,9 +29,13 @@ const PodcastType = () => {
         setTypePod(imageUrl);
     }
 
+    const awaitData = async () => {
+        await saveURL(db, storage, "radio/podcast-type");
+        await getURL(db);
+    }
+
     useEffect(() => {
-        saveURL(db, storage, "radio/podcast-type");
-        getURL(db);
+        awaitData();
     }, [])
 
     return (

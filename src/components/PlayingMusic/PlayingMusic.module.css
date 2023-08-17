@@ -1,0 +1,179 @@
+.container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 90px;
+    background-color: #170f23;
+    border-top: 1px hsla(0, 0%, 100%, 0.1) solid;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    color: white;
+    z-index: 9999;
+}
+
+.leftControl {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.audioWrap {
+    max-width: 155px;
+    width: 100px;
+    overflow: hidden;
+    margin: 0 10px 0 10px;
+}
+
+.audioName {
+    font-size: 14px;
+    font-weight: 500;
+    animation: marquee 5s linear infinite;
+    margin-bottom: 1px;
+}
+
+.audioArtist {
+    color: hsla(0, 0%, 100%, 0.5);
+    width: 100%;
+    font-size: 12px;
+}
+
+@keyframes marquee {
+    0% {
+        transform: translateX(100%);
+    }
+
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+.midControl {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.midUp {
+    height: 80%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding-top: 20px;
+}
+
+.midDown {
+    height: 20%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 20px;
+}
+
+.rightControl {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    justify-content: flex-end;
+}
+
+.pendingList {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #FFFFFF1A;
+    border-radius: 4px;
+    font-weight: 500;
+}
+
+.pendingList:hover {
+    -webkit-filter: brightness(.9);
+    filter: brightness(.9);
+    cursor: pointer;
+}
+
+.pendingList:active {
+    background-color: #9b4de0;
+}
+
+.drawer {
+    color: white;
+}
+
+.headerDrawer {
+    display: flex;
+    flex-direction: row;
+    height: 70px;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.leftOuter {
+    background-color: hsla(0, 0%, 100%, 0.1);
+    height: 35px;
+    border-radius: 999px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-left: 8px;
+}
+
+.leftInner {
+    height: 30px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0 5px 0 5px;
+}
+
+.leftLabel {
+    border-radius: 999px;
+    height: 100%;
+    padding: 0 5px 0 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 500;
+    background-color: hsla(0, 0%, 100%, 0.3);
+}
+
+.leftText {
+    font-size: 12px;
+    margin: 0 10px 0 10px;
+}
+
+.currentAudio {
+    padding: 0 8px 0 8px;
+    height: 55px;
+    width: 315px;
+    background-color: #9b4de0;
+    border-radius: 4px;
+}
+
+.opacityButton {
+    /* position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%); */
+}
+
+.currentAudio:hover {
+
+}
