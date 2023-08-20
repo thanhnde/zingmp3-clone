@@ -10,7 +10,7 @@ const NavBar = () => {
                 display: 'flex',
                 flexDirection: 'row',
                 width: "100%",
-                height: "auto",
+                height: "auto"
             }}>
                 <div className={styles.leftNavBar}>
                     <div style={{ width: "auto", height: "40px", display: "flex", flexDirection: "row", alignItems: "center" }}>
@@ -35,7 +35,9 @@ const NavBar = () => {
                                 preview={false}
                             />
                         </div>
-                        <p>Tải bản Windows</p>
+                        <div>
+                            <p>Tải bản Windows</p>
+                        </div>
                     </div>
 
                     <div className={styles.settingButton}>

@@ -4,10 +4,11 @@ import { CSSProperties } from "react";
 type MoreOuterSize = {
     height: number,
     width: number
-    margin?: string
+    margin?: string,
+    backgroundColor?: string
 }
 
-const MoreOutlinedButton = ({ height, width, margin}: MoreOuterSize) => {
+const MoreOutlinedButton = ({ height, width, margin, backgroundColor}: MoreOuterSize) => {
     return (
         <div style={{
             width: `${width}px`,
@@ -15,7 +16,7 @@ const MoreOutlinedButton = ({ height, width, margin}: MoreOuterSize) => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            backgroundColor: "hsla(0,0%,100%,0.1)",
+            backgroundColor,
             borderRadius: "999px",
             margin: margin
         }}>

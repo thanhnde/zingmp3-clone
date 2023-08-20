@@ -15,7 +15,9 @@ type PlayingProps = {
     image: string,
     artist: string
     audio: string,
-    isPlaying: boolean
+    playing: boolean,
+    handlePlay: () => void,
+    handlePlayPause: () => void,
 }
 
 const iconRightControl = [
@@ -45,19 +47,7 @@ const iconRightControl = [
     </div>
 ]
 
-const PlayingMusic = ({ name, image, artist, audio, isPlaying }: PlayingProps) => {
-    const [playing, setPlaying] = useState(false);
-
-    console.log(name)
-
-    const handlePlay = () => {
-        setPlaying(isPlaying);
-    }
-
-    const handlePlayPause = () => {
-        setPlaying(!playing);
-    }
-
+const PlayingMusic = ({ name, image, artist, audio, playing, handlePlay, handlePlayPause }: PlayingProps) => {
     //////////// Drawer /////////////
     const [open, setOpen] = useState(false);
 
@@ -68,6 +58,14 @@ const PlayingMusic = ({ name, image, artist, audio, isPlaying }: PlayingProps) =
     const closeDrawer = () => {
         setOpen(false);
     };
+
+    const [played, setPlayed] = useState(0);
+
+    const handleProgress = (progress: any) => {
+        setPlayed(progress.played * 100);
+        // console.log(progress.playedSeconds)
+        // console.log(progress.loadedSeconds) // total time of audio at second
+    }
 
     return (
         <div className={styles.container}>
@@ -87,14 +85,16 @@ const PlayingMusic = ({ name, image, artist, audio, isPlaying }: PlayingProps) =
 
                     <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                         <HeartOutlinedButton height={36} width={36} />
-                        <MoreOutlinedButton height={36} width={36} />
+                        <MoreOutlinedButton height={36} width={36}/>
                     </div>
                 </div>
             </div>
 
-            {/* ///////////////// MID ///////////// */}
+            {/* ///////////////// MID ///////////////// */}
             <div style={{ width: "50%", maxWidth: "40vw" }}>
                 <div className={styles.midControl}>
+
+                    {/* ///////////////////// MID UP ///////////////////// */}
                     <div className={styles.midUp}>
                         <div style={{
                             width: "50px",
@@ -104,7 +104,7 @@ const PlayingMusic = ({ name, image, artist, audio, isPlaying }: PlayingProps) =
                             justifyContent: 'center'
                         }}>
                             <div style={{ height: "16px", width: "16px" }}>
-                                <FontAwesomeIcon icon={icon({ name: "shuffle", style: 'solid' })} style={{ width: "100%", height: "100%" }} />
+                                <FontAwesomeIcon icon={icon({ name: "shuffle", style: 'solid' })} style={{ width: "100%", height: "100%", cursor: "pointer" }} />
                             </div>
                         </div>
 
@@ -116,7 +116,7 @@ const PlayingMusic = ({ name, image, artist, audio, isPlaying }: PlayingProps) =
                             justifyContent: 'center'
                         }}>
                             <div style={{ height: "16px", width: "16px" }}>
-                                <FontAwesomeIcon icon={icon({ name: "backward-step", style: 'solid' })} style={{ width: "100%", height: "100%" }} />
+                                <FontAwesomeIcon icon={icon({ name: "backward-step", style: 'solid' })} style={{ width: "100%", height: "100%", cursor: "pointer" }} />
                             </div>
                         </div>
 
@@ -128,7 +128,10 @@ const PlayingMusic = ({ name, image, artist, audio, isPlaying }: PlayingProps) =
                             justifyContent: 'center'
                         }}>
                             <div style={{ height: "40px", width: "40px" }} onClick={handlePlayPause}>
-                                <FontAwesomeIcon icon={icon({ name: "circle-play", style: 'regular' })} style={{ width: "100%", height: "100%" }} />
+                                {playing
+                                    ? <FontAwesomeIcon icon={icon({ name: "circle-pause", style: 'regular' })} style={{ width: "100%", height: "100%", cursor: "pointer" }} />
+                                    : <FontAwesomeIcon icon={icon({ name: "circle-play", style: 'regular' })} style={{ width: "100%", height: "100%", cursor: "pointer" }} />
+                                }
                             </div>
                         </div>
 
@@ -140,7 +143,7 @@ const PlayingMusic = ({ name, image, artist, audio, isPlaying }: PlayingProps) =
                             justifyContent: 'center'
                         }}>
                             <div style={{ height: "16px", width: "16px" }}>
-                                <FontAwesomeIcon icon={icon({ name: "forward-step", style: 'solid' })} style={{ width: "100%", height: "100%" }} />
+                                <FontAwesomeIcon icon={icon({ name: "forward-step", style: 'solid' })} style={{ width: "100%", height: "100%", cursor: "pointer" }} />
                             </div>
                         </div>
 
@@ -152,11 +155,12 @@ const PlayingMusic = ({ name, image, artist, audio, isPlaying }: PlayingProps) =
                             justifyContent: 'center'
                         }}>
                             <div style={{ height: "16px", width: "16px" }}>
-                                <FontAwesomeIcon icon={icon({ name: "repeat", style: 'solid' })} style={{ width: "100%", height: "100%" }} />
+                                <FontAwesomeIcon icon={icon({ name: "repeat", style: 'solid' })} style={{ width: "100%", height: "100%", cursor: "pointer" }} />
                             </div>
                         </div>
                     </div>
 
+                    {/* ///////////////////// MID DOWN ////////////////// */}
                     <div className={styles.midDown}>
                         <div style={{ fontSize: '12px', height: '100%', display: 'flex', alignItems: 'center', paddingRight: "10px" }}>
                             <div style={{ height: "20px", display: 'flex', alignItems: 'center', opacity: "0.5" }}>00:00</div>
@@ -169,8 +173,8 @@ const PlayingMusic = ({ name, image, artist, audio, isPlaying }: PlayingProps) =
                             }}>
                                 <Progress
                                     strokeColor='white'
-                                    trailColor='hsla(0,0%,100%,0.3'
-                                    percent={50}
+                                    trailColor='hsla(0,0%,100%,0.3)'
+                                    percent={played}
                                     size="small"
                                     showInfo={false}
                                 />
@@ -216,11 +220,14 @@ const PlayingMusic = ({ name, image, artist, audio, isPlaying }: PlayingProps) =
                 </div>
             </div>
 
+
+            {/*  //////////////////// PLAYING ////////////// */}
             <ReactPlayer
                 width={0} height={0}
                 url={audio}
                 playing={playing}
                 onPlay={handlePlay}
+                onProgress={handleProgress}
             />
 
             <Drawer className={styles.drawer} title="Basic Drawer" placement="right" onClose={closeDrawer} open={open}>
@@ -248,7 +255,7 @@ const PlayingMusic = ({ name, image, artist, audio, isPlaying }: PlayingProps) =
                         <FontAwesomeIcon style={{ fontSize: 16 }} icon={icon({ name: "clock", style: "regular" })} />
                     </div>
 
-                    <MoreOutlinedButton height={32} width={32} margin='0 8px 0 0' />
+                    <MoreOutlinedButton height={32} width={32} margin='0 8px 0 0' backgroundColor='hsla(0,0%,100%,0.1)'/>
                 </div>
 
                 <div className={styles.currentAudio}>
@@ -267,7 +274,7 @@ const PlayingMusic = ({ name, image, artist, audio, isPlaying }: PlayingProps) =
                             <img className={styles.currentImage} style={{ height: "100%", width: "100%", borderRadius: '4px' }} src="https://firebasestorage.googleapis.com/v0/b/zmp3-clone.appspot.com/o/discover%2Fnew-release%2FifioAa4Ksz%2Fimage%2Fbdbfd3b2c6b28137a759b77b02e2fae8.webp?alt=media&token=163285c4-041b-4e1e-8953-e54f93359329" alt="" />
 
                             <div className={styles.opacityButton}>
-                                <MoreOutlinedButton height={26} width={26}/>
+                                <MoreOutlinedButton height={26} width={26} />
                             </div>
                         </div>
                     </div>

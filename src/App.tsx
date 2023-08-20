@@ -1,3 +1,6 @@
+import { useContext } from 'react';
+import { AudioContext } from './utils/AudioContext';
+
 import MenuBar from './components/MenuBar/MenuBar';
 import NavBar from './components/NavBar/NavBar';
 
@@ -17,6 +20,7 @@ import { useState, useEffect } from 'react';
 import NewReleaseUpload from './admin-upload/NewReleaseUpload';
 import ChillUpload from './admin-upload/ChillUpload';
 import MCYDUpload from './admin-upload/MCYDUpload';
+import PlayingMusic from './components/PlayingMusic/PlayingMusic';
 
 const pages = [
   { component: <Discover />, path: "/" },
@@ -39,8 +43,11 @@ function App() {
     }, 0);
   }, []);
 
+  // const currentAudio = useContext(AudioContext);
+
   return (
     <>
+      {/* <AudioContext.Provider value={currentAudio}> */}
       {loading
         ?
         <div>
@@ -63,9 +70,10 @@ function App() {
                 padding: "0 60px 0 60px",
               }}>
                 <NavBar />
+
                 <Routes>
                   {pages.map((item, index) => (
-                    <Route key={index} path={ item.path} element={item.component} />
+                    <Route key={index} path={item.path} element={item.component} />
                   ))}
 
                   {/* UPLOAD TEST */}
@@ -76,10 +84,21 @@ function App() {
                 </Routes>
               </div>
             </div>
+
+            {/* <PlayingMusic 
+              name={currentAudio?.name}
+              artist={currentAudio?.artist}
+              image={currentAudio?.image}
+              audio={currentAudio?.audio}
+              playing={currentAudio?.playing}
+              handlePlay={currentAudio?.handlePlay}
+              handlePlayPause={currentAudio?.handlePlayPause}
+            /> */}
           </div>
         </div>
         : <p style={{ height: "100%", width: "100%", color: 'white', textAlign: 'center', transform: "translateY(50%)" }}>Loading test ...</p>
       }
+      {/* </AudioContext.Provider> */}
     </>
   );
 }

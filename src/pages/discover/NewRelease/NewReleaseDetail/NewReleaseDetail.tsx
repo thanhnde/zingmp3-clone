@@ -62,37 +62,86 @@ const NewReleaseDetail = ({ type }: TypeMusicProps) => {
         awaitData();
     }, [])
 
-    let newReleaseDetail: Array<NewReleaseProps> = [];
+    // let newReleaseDetail: Array<NewReleaseProps> = [];
+    const [listNewReleaseAll, setListNewReleaseAll] = useState<Array<NewReleaseProps>>([]);
+    const [listNewReleaseVN, setListNewReleaseVN] = useState<Array<NewReleaseProps>>([]);
+    const [listNewReleaseQT, setListNewReleaseQT] = useState<Array<NewReleaseProps>>([]);
 
-    if (data) {
-        if (type === "ALL") {
-            newReleaseDetail = Object.values(data).flat() as NewReleaseProps[]; // Set all
+    useEffect(() => {
+        if (data) {
+            if (type === "ALL") {
+                const allData = Object.values(data).flat() as NewReleaseProps[];
+                setListNewReleaseAll(allData.slice(0, 12));
+            }
+            if (type === "VN") {
+                setListNewReleaseVN(data["VN"].slice(0, 12)) // Set follow type
+            }
+            if (type === "QT") {
+                setListNewReleaseQT(data["QT"].slice(0, 12)) // Set follow type
+            }
         }
-        else if (type === "QT" || type === "VN") {
-            newReleaseDetail = data[type] // Set follow type
-        }
-    }
+    }, [data, type])
 
     return (
         <div className={styles.gridMusic}>
-            {Object.values(newReleaseDetail).map((item, index) => {
-                if (index < 12 && item.name !== "Temp Data") {
-                    return (
-                        <div>
-                            <Music
-                                imageMusic={item.media.image.path}
-                                nameMusic={item.name}
-                                artist={item.artist}
-                                audio={item.media.audio.path}
-                                releaseTime={item.time}
-                                type={item.type}
-                                premium={item.premium}
-                            />
-                        </div>
-                    )
-                }
-                else return <></>
-            })}
+            {
+                type === "ALL"
+                    ? Object.values(listNewReleaseAll).map((item) => {
+                        if (item.name !== "Temp Data") {
+                            return (
+                                <div key={item.name}>
+                                    <Music
+                                        imageMusic={item.media.image.path}
+                                        nameMusic={item.name}
+                                        artist={item.artist}
+                                        audio={item.media.audio.path}
+                                        releaseTime={item.time}
+                                        type={item.type}
+                                        premium={item.premium}
+                                    />
+                                </div>
+                            )
+                        }
+                        else return <></>
+                    })
+                    : type === "VN"
+                        ? Object.values(listNewReleaseVN).map((item) => {
+                            if (item.name !== "Temp Data") {
+                                return (
+                                    <div key={item.name}>
+                                        <Music
+                                            imageMusic={item.media.image.path}
+                                            nameMusic={item.name}
+                                            artist={item.artist}
+                                            audio={item.media.audio.path}
+                                            releaseTime={item.time}
+                                            type={item.type}
+                                            premium={item.premium}
+                                        />
+                                    </div>
+                                )
+                            }
+                            else return <></>
+                        })
+                        : Object.values(listNewReleaseQT).map((item) => {
+                            if (item.name !== "Temp Data") {
+                                return (
+                                    <div key={item.name}>
+                                        <Music
+                                            imageMusic={item.media.image.path}
+                                            nameMusic={item.name}
+                                            artist={item.artist}
+                                            audio={item.media.audio.path}
+                                            releaseTime={item.time}
+                                            type={item.type}
+                                            premium={item.premium}
+                                        />
+                                    </div>
+                                )
+                            }
+                            else return <></>
+                        })
+            }
         </div>
     )
 }

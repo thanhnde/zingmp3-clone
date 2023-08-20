@@ -18,7 +18,7 @@
 }
 
 .moreButton {
-    width:40px;
+    width: 40px;
     height: 40px;
     display: flex;
     align-items: center;
@@ -46,11 +46,12 @@
         left: 50%;
         align-items: center;
         transform: translateX(-50%) translateY(-50%);
-        width: 100%;
         color: white;
+        width: 100%;
     }
 
     .opacityMoreButton {
+        padding-right: 20px;
         display: flex;
         justify-content: flex-end;
         position: absolute;
@@ -60,8 +61,8 @@
         bottom: 0;
         align-items: center;
         transform: translateX(-50%) translateY(-50%);
-        width: 100%;
         color: white;
+        width: 100%;
     }
 }
 

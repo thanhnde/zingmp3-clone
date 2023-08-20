@@ -16,6 +16,8 @@ type DiscoverCateLayoutProps = {
 }
 
 const DiscoverCategoryLayout = ({ titleHeader, data, nameOfOtherButton, height, width, numOfDisplay }: DiscoverCateLayoutProps) => {
+    data = data.slice(0, numOfDisplay);
+
     return (
         <div style={{ height: height, width: width, paddingTop: '50px', paddingBottom: '16px' }}>
             <div style={{
@@ -44,7 +46,7 @@ const DiscoverCategoryLayout = ({ titleHeader, data, nameOfOtherButton, height, 
             {/* <div style={{ display: 'grid', gridTemplateColumns: "auto auto auto auto auto", height: "100%", width: "100%" }}> */}
             <div style={{ display: 'flex', flexDirection: "row", justifyContent: "flex-start", height: "100%", width: "100%" }}>
                 {Object.values(data).map((i: any, index: number) => {
-                    if (index < numOfDisplay) {
+                    // if (index < numOfDisplay) {
                         if (index === 0) {
                             return (
                                 <div style={{ margin: "0 15px 0 0" }}>
@@ -64,7 +66,7 @@ const DiscoverCategoryLayout = ({ titleHeader, data, nameOfOtherButton, height, 
                                 <MusicCard title={i.title} imageAlbum={i.imageAlbum} />
                             </div>
                         )
-                    } else return null
+                    // } else return null
                 })}
             </div>
         </div >

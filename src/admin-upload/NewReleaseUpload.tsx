@@ -224,10 +224,10 @@ const NewReleaseUpload = () => {
                 <input
                     type="text" value={input.name}
                     name="name" onChange={handleText} required
-                    style={{borderRadius: "5px", border: 0, height: "20px"}}
+                    style={{ borderRadius: "5px", border: 0, height: "20px" }}
                 />
                 <input type="text" value={input.artist} name="artist" onChange={handleText} required
-                    style={{borderRadius: "5px", border: 0, height: "20px"}}
+                    style={{ borderRadius: "5px", border: 0, height: "20px" }}
                 />
 
                 <Select
@@ -239,13 +239,12 @@ const NewReleaseUpload = () => {
                     placeholder="Select type"
                     size="small"
                 />
-                <input type="checkbox" name="checkbox" id="checkbox" onChange={handleCheckbox}
-                    style={{}} />
+                <input type="checkbox" name="checkbox" id="checkbox" onChange={handleCheckbox} />
             </div>
 
-            <div>
-                <button type="submit" onSubmit={handleUploadFile}>Upload</button>
-            </div>
+            <form onSubmit={handleUploadFile}>
+                <button type="submit" >Upload</button>
+            </form>
         </div>
     )
 }
